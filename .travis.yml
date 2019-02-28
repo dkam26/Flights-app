@@ -1,0 +1,26 @@
+language: python
+python:
+  - "3.6"
+branches:
+    only:
+        - develop
+addons:
+  postgresql: "9.4"
+
+#To install dependences
+install:
+  - pip install -r requirements.txt
+
+before_script:
+  - createuser kamaradeo --createdb
+  - createdb flightbooking -U kamaradeo
+
+
+#To run tests
+script:
+  - cd djangorest/
+  - coverage run --source=flight  manage.py test
+  - coverage report -m
+
+after_success:
+  - coveralls
