@@ -16,7 +16,7 @@ before_script:
 
 #To run tests
 script:
-  - cd djangorest/
+  - cd flight_app/
   - coverage run  manage.py test
   - coverage report -m
 
