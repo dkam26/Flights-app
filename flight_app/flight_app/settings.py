@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'jypl(_p2t4r+*el!8kgxhfowijwg%84b#gfh5#n)+3wg*a#r$&'
+SECRET_KEY = '7=6g%^9e+)kc!^b4-hm+zbzbh-))k)h&l3#s4!xya9v_$qvs95'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'flights',
+    'user',
+
 ]
+
+AUTH_USER_MODEL = 'user.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -75,10 +81,18 @@ WSGI_APPLICATION = 'flight_app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'flightbookingapp',
+        'USER': 'kamaradeo',
+        'PASSWORD': 'masiko26',
+        'HOST': 'localhost',
+        'PORT': '',
+        'TEST': {
+            'NAME':'text_bookingapp',
+        }
     }
 }
+
 
 
 # Password validation
