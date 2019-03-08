@@ -5,7 +5,7 @@ from .views import CreateView, DetailsView
 
 urlpatterns = {
     url(r'create/flights/$', CreateView.as_view(), name="create"),
-    url(r'^detials/(?P<pk>[0-9]+)/$',
+    url(r'^detials/$',
         DetailsView.as_view(), name="details"),
 }
 
