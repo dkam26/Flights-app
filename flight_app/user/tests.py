@@ -29,6 +29,9 @@ class ModelTestCase(TestCase):
 
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
 
+
+
+
     def test_user_can_login(self):
 
         response = self.client.post(
@@ -50,6 +53,7 @@ class ModelTestCase(TestCase):
         new_user = User.objects.create_user("nana@email.com",self.user['name'],self.user['password'])
         staffuser = User.objects.create_staffuser("short@email.com", self.user['name'], self.user['password'])
         supperuser = User.objects.create_superuser("short3@email.com", self.user['name'], self.user['password'])
+        self.assertEquals(new_user.__str__(),new_user.email)
         self.assertEquals("nana@email.com", new_user.email)
         self.assertEquals("short@email.com", staffuser.email)
         self.assertEquals("short3@email.com", supperuser.email)
