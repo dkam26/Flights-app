@@ -41,7 +41,11 @@ class ModelTestCase(TestCase):
         user = User.objects.get(email=self.user['email'], password=self.user['password'])
         authenticate_user = MyAuthBackend()
         response = authenticate_user.authenticate(self.user['email'], self.user['password'])
+        invalid_response = authenticate_user.authenticate(self.user['email'], '89')
         self.assertEquals(response, user)
+        self.assertEquals(invalid_response, None)
+
+
 
 
 
