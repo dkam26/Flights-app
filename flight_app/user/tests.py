@@ -8,6 +8,7 @@ from django.urls import reverse
 import json
 from PIL import Image
 import tempfile
+from .backends import MyAuthBackend
 
 
 class ModelTestCase(TestCase):
@@ -35,3 +36,12 @@ class ModelTestCase(TestCase):
             {'email':self.user['email'], 'password':self.user['password']},
             format='json')
         self.assertEquals(response.status_code, status.HTTP_200_OK)
+
+    def test_authenticate_method(self):
+        user = User.objects.get(email=self.user['email'], password=self.user['password'])
+        authenticate_user = MyAuthBackend()
+        response = authenticate_user.authenticate(self.user['email'], self.user['password'])
+        self.assertEquals(response, user)
+
+
+
