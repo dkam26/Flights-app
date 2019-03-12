@@ -65,6 +65,23 @@ class ModelTestCase(TestCase):
                 format='multipart')
             self.assertEquals(res.data, {'Message': 'Image successfully changed'})
 
+    def test_user_change_image_without_token(self):
+        response = self.client.post(
+            reverse('login'),
+            {'email':self.user['email'], 'password':self.user['password']},
+            format='json')
+        image = Image.new('RGB', (100, 100))
+        tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
+        image.save(tmp_file)
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION='')
+        with open(tmp_file.name, 'rb') as data:
+            res = client.put(
+                reverse('create'),
+                {"passport_photograh":data},
+                format='multipart')
+            self.assertEquals(res.data, {'Message': 'No token provided'})
+
     def test_authenticate_method(self):
         user = User.objects.get(email=self.user['email'], password=self.user['password'])
         authenticate_user = MyAuthBackend()
