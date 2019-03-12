@@ -56,10 +56,14 @@ class CreateView(mixins.ListModelMixin,
         if request.META['HTTP_AUTHORIZATION']:
             token = request.META['HTTP_AUTHORIZATION']
             user_id = Token.objects.values_list('user_id', flat=True).get(key=token)
-            user = User.objects.get(id=user_id)
-            user.passport_photograh = ''
-            user.save()
-            Response(user)
+            if user_id:
+                user = User.objects.get(id=user_id)
+                user.passport_photograh = ''
+                user.save()
+                return Response({'Message':'Image successfully removed'})
+            else:
+                return Response({'Message':'Invalid token'})
+
         return Response({'Message':'No token provided'})
 
 class LoginAPIView(APIView):

@@ -25,6 +25,7 @@ class ModelTestCase(TestCase):
                 format='multipart')
 
 
+
     def test_model_can_create_a_account(self):
 
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
@@ -57,6 +58,10 @@ class ModelTestCase(TestCase):
         tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
         image.save(tmp_file)
         client = APIClient()
+        response = self.client.post(
+            reverse('login'),
+            {'email':self.user['email'], 'password':self.user['password']},
+            format='json')
         client.credentials(HTTP_AUTHORIZATION=response.data['token'])
         with open(tmp_file.name, 'rb') as data:
             res = client.put(
@@ -65,11 +70,21 @@ class ModelTestCase(TestCase):
                 format='multipart')
             self.assertEquals(res.data, {'Message': 'Image successfully changed'})
 
-    def test_user_change_image_without_token(self):
+
+    def test_user_delete_image(self):
+        client = APIClient()
         response = self.client.post(
             reverse('login'),
             {'email':self.user['email'], 'password':self.user['password']},
             format='json')
+        client.credentials(HTTP_AUTHORIZATION=response.data['token'])
+        res = client.delete(
+                reverse('create'),
+                format='json')
+        self.assertEquals(res.data, {'Message': 'Image successfully removed'})
+
+    def test_user_change_image_without_token(self):
+
         image = Image.new('RGB', (100, 100))
         tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
         image.save(tmp_file)
