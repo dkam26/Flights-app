@@ -46,7 +46,7 @@ class CreateView(mixins.ListModelMixin,
                     user = User.objects.get(id=user_id)
                     user.passport_photograh = passport_photograh_url['secure_url']
                     user.save()
-                    return Response(user)
+                    return Response({'Message':'Image successfully changed'})
                 else:
                     return Response({'Message':'Invalid image type.Only .jpg and .png images allowed!'})
             else:

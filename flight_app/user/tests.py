@@ -48,6 +48,23 @@ class ModelTestCase(TestCase):
             format='json')
         self.assertEquals(response.data, {'Message': 'Invalid credientals'})
 
+    def test_user_change_image(self):
+        response = self.client.post(
+            reverse('login'),
+            {'email':self.user['email'], 'password':self.user['password']},
+            format='json')
+        image = Image.new('RGB', (100, 100))
+        tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
+        image.save(tmp_file)
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION=response.data['token'])
+        with open(tmp_file.name, 'rb') as data:
+            res = client.put(
+                reverse('create'),
+                {"passport_photograh":data},
+                format='multipart')
+            self.assertEquals(res.data, {'Message': 'Image successfully changed'})
+
     def test_authenticate_method(self):
         user = User.objects.get(email=self.user['email'], password=self.user['password'])
         authenticate_user = MyAuthBackend()
