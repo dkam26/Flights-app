@@ -30,15 +30,6 @@ class ModelTestCase(TestCase):
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
 
 
-    def test_user_can_login(self):
-       self.login = {'email':'kd@gmail.com', 'password':'1234'}
-       self.response = self.client.post(
-                reverse('login'),
-                self.login,
-                format='json')
-       self.assertEqual(self.response.status_code, status.HTTP_200_OK)
-
-
 
     def test_user_can_login(self):
 
@@ -47,6 +38,15 @@ class ModelTestCase(TestCase):
             {'email':self.user['email'], 'password':self.user['password']},
             format='json')
         self.assertEquals(response.status_code, status.HTTP_200_OK)
+
+
+    def test_user_cant_login(self):
+
+        response = self.client.post(
+            reverse('login'),
+            {'email':'iigmail.com', 'password':self.user['password']},
+            format='json')
+        self.assertEquals(response.data, {'Message': 'Invalid credientals'})
 
     def test_authenticate_method(self):
         user = User.objects.get(email=self.user['email'], password=self.user['password'])
