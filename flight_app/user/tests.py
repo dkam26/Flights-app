@@ -30,6 +30,19 @@ class ModelTestCase(TestCase):
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
 
 
+   def test_user_can_login(self):
+       
+
+    def test_if_user_change_image(self):
+        image = Image.new('RGB', (100, 100))
+        tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
+        image.save(tmp_file)
+        with open(tmp_file.name, 'rb') as data:
+            self.response = self.client.put(
+                reverse('create'),
+                data,
+                format='multipart')
+
 
 
     def test_user_can_login(self):

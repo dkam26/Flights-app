@@ -25,27 +25,33 @@ class CreateView(mixins.ListModelMixin,
     serializer_class = (UserSerializer, ChangeSerializer)
     permission_classes = (permissions.AllowAny,)
     def post(self, request, *args, **kwargs):
-        passport_photograh_url = cloudinary.uploader.upload(request.FILES['passport_photograh'])
-        request.data['passport_photograh'] = passport_photograh_url['secure_url']
-        user_serializer = UserSerializer(data=request.data)
-        if user_serializer.is_valid():
-            user_serializer.save()
-            return Response(user_serializer.data, status=status.HTTP_201_CREATED)
-        return Response('Wrong format/Email already exists')
+        image_url = request.FILES['passport_photograh']
+        if image_url.name.endswith('.jpg') or image_url.name.endswith('.png'):
+            passport_photograh_url = cloudinary.uploader.upload(request.FILES['passport_photograh'])
+            request.data['passport_photograh'] = passport_photograh_url['secure_url']
+            user_serializer = UserSerializer(data=request.data)
+            if user_serializer.is_valid():
+                user_serializer.save()
+                return Response(user_serializer.data, status=status.HTTP_201_CREATED)
+            return Response({'Message':'Wrong format/Email already exists'})
+        return Response({'Message':'Invalid image type.Only .jpg and .png images allowed!'})
     def put(self, request, *args, **kwargs):
         if request.META['HTTP_AUTHORIZATION']:
             token = request.META['HTTP_AUTHORIZATION']
             user_id = Token.objects.values_list('user_id', flat=True).get(key=token)
-            passport_photograh = request.FILES['passport_photograh']
-            passport_photograh_url = cloudinary.uploader.upload(passport_photograh)
-            if passport_photograh:
-                user = User.objects.get(id=user_id)
-                user.passport_photograh = passport_photograh_url['secure_url']
-                user.save()
-                Response(user)
+            if user_id:
+                passport_photograh = request.FILES['passport_photograh']
+                if passport_photograh.name.endswith('.jpg') or passport_photograh.name.endswith('.png'):
+                    passport_photograh_url = cloudinary.uploader.upload(passport_photograh)
+                    user = User.objects.get(id=user_id)
+                    user.passport_photograh = passport_photograh_url['secure_url']
+                    user.save()
+                    return Response(user)
+                else:
+                    return Response({'Message':'Invalid image type.Only .jpg and .png images allowed!'})
             else:
-                Response('Provide valid image')
-        return Response('No token provided')
+                return Response({'Message':'Invalid Token'})
+        return Response({'Message':'No token provided'})
     def delete(self, request, *args, **kwargs):
         if request.META['HTTP_AUTHORIZATION']:
             token = request.META['HTTP_AUTHORIZATION']
@@ -54,7 +60,7 @@ class CreateView(mixins.ListModelMixin,
             user.passport_photograh = ''
             user.save()
             Response(user)
-        return Response('No token provided')
+        return Response({'Message':'No token provided'})
 
 class LoginAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -74,17 +80,3 @@ class LoginAPIView(APIView):
         else:
             return Response({'Message':'Invalid credientals'},status=HTTP_400_BAD_REQUEST)
 
-class ChangeAPIView(APIView):
-    permission_classes = (permissions.AllowAny,)
-    parser_classes = (MultiPartParser,FormParser)
-    def put(self, request, format=None):
-        if request.META['HTTP_AUTHORIZATION']:
-            token = request.META['HTTP_AUTHORIZATION']
-            user_id = Token.objects.values_list('user_id', flat=True).get(key=token)
-            serializer = ChangeSerializer(data=request.data['passport_photograh'])
-            passport_photograh = request.FILES['passport_photograh']
-            user = User.objects.get(id=user_id)
-            # user.passport_photograh = passport_photograh
-            # user.save()
-            return Response(passport_photograh )
-        return Response('No token provided')
