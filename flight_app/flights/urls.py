@@ -1,12 +1,12 @@
 from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
-from .views import CreateView, DetailsView
+from .views import ListFlightView, CreateView, DetailsView
 
 
 urlpatterns = {
-    url(r'create/flights/$', CreateView.as_view(), name="create"),
-    url(r'^detials/(?P<pk>[0-9]+)/$',
-        DetailsView.as_view(), name="details"),
+    url(r'flights/$',ListFlightView.as_view(), name='flights'),
+    url(r'book/flight/$',CreateView.as_view(), name='book flight'),
+    url(r'user/flights/$',DetailsView.as_view(), name= 'user flights')
 }
 
 urlpatterns = format_suffix_patterns(urlpatterns)
