@@ -17,12 +17,12 @@ class ListFlightSerializer(serializers.ModelSerializer):
     'available_seats',
     'date',
     'plane_number',
-    'seats' )
+    'seats', )
 
 
 class FlightSerializer(serializers.ModelSerializer):
     class Meta:
-        model =Tickets
+        model = Tickets
         fields = ('airline',
     'origin',
     'destination',

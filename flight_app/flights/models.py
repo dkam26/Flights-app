@@ -21,9 +21,7 @@ class AvailableFlights(models.Model):
     plane_number = models.CharField(max_length=50, blank=True, null=True)
     seats = JSONField()
 
-    class Meta:
-        managed = False
-        db_table = 'available_flights'
+
 
 
 class Tickets(models.Model):

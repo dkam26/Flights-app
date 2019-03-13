@@ -12,8 +12,6 @@ class ListFlightView(APIView):
     serializer_class = ListFlightSerializer
     permission_classes = (permissions.AllowAny,)
     def post(self, request, format=None):
-        # available_flights =  AvailableFlights.objects.filter(available_seats__gt=0)
-        # serializer = ListFlightSerializer(available_flights, many=True)
         if request.META['HTTP_AUTHORIZATION']:
             token = request.META['HTTP_AUTHORIZATION']
             user_id = Token.objects.values_list('user_id', flat=True).get(key=token)
@@ -64,11 +62,14 @@ class DetailsView(APIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = FlightSerializer
 
-    def get(self, request, format=None):
+    def post(self, request, format=None):
         if request.META['HTTP_AUTHORIZATION']:
             token = request.META['HTTP_AUTHORIZATION']
             user_id = Token.objects.values_list('user_id', flat=True).get(key=token)
-            flights = Tickets.objects.filter(user_id=user_id).all()
-            serializer = FlightSerializer(flights, many=True)
-            return Response(serializer.data)
+            if user_id:
+                flights = Tickets.objects.filter(user_id=user_id).all()
+                serializer = FlightSerializer(flights, many=True)
+                return Response(serializer.data)
+            else:
+                Response('Invalid Token!')
         return Response('No token provided')
