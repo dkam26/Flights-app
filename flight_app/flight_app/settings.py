@@ -37,11 +37,37 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'rest_framework',
     'flights',
     'user',
+    'cloudinary',
 
 ]
+MEDIA_URL = 'flight_app/user/passport_photographs/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "passport_photographs")
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated', ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ]
+
+}
+import cloudinary
+
+cloudinary.config(
+  cloud_name = "flightapp",
+  api_key = "816736129758431",
+  api_secret = "JOvjTau0oQfafYr2MNHJieNtxoQ"
+)
+
+
+AUTHENTICATION_BACKENDS = ('user.backends.MyAuthBackend',)
 
 AUTH_USER_MODEL = 'user.User'
 
