@@ -40,10 +40,21 @@ INSTALLED_APPS = [
     'rest_framework',
     'flights',
     'user',
+    'djcelery',
+    'djcelery_email',
 
 ]
 
+BROKER_URL = 'amqp://[ipaddress]'
+CELERY_RESULT_BACKEND = 'amqp://[ipaddress]'
+# Celery Data Format
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+
 AUTH_USER_MODEL = 'user.User'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
