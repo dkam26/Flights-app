@@ -1,11 +1,13 @@
 from celery import shared_task
-from __future__ import absolute_import, unicode_literals
-from user.models import User
+from celery.utils.log import get_task_logger
+from .mailer import send_notification_email
+from datetime import datetime, timedelta
 
-@shared_task
-def send_notification_mail(user_id, context):
-    user = User.objects.filter(pk=user_id)
-    if user:
-        print(user)
-    else:
-        print('not found')
+logger=get_task_logger(__name__)
+
+# This is the decorator which a celery worker uses
+@shared_task(name="send_notification_email_task")
+def send_notification_email_task(name,email,message):
+    logger.info("Sent email")
+    return send_notification_email(name,email,message)
+
