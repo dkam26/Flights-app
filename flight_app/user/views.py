@@ -74,17 +74,19 @@ class LoginAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = UserLoginSerializer
     def post(self, request, format=None):
-        data = request.data
-        email = data.get('email')
-        password = data.get('password')
-        AuthBack = MyAuthBackend()
-        user = AuthBack.authenticate(email=email, password=password)
-        if user is not None:
-            if user.is_active:
-                token,_ = Token.objects.get_or_create(user=user)
-                return Response({'token':token.key}, status=HTTP_200_OK)
+        if list(request.data.keys()) == ['email', 'password']:
+            data = request.data
+            email = data.get('email')
+            password = data.get('password')
+            AuthBack = MyAuthBackend()
+            user = AuthBack.authenticate(email=email, password=password)
+            if user is not None:
+                if user.is_active:
+                    token,_ = Token.objects.get_or_create(user=user)
+                    return Response({'token':token.key}, status=HTTP_200_OK)
+                else:
+                    return Response({'Message':'Invalid credientals'},status=HTTP_400_BAD_REQUEST)
             else:
                 return Response({'Message':'Invalid credientals'},status=HTTP_400_BAD_REQUEST)
-        else:
-            return Response({'Message':'Invalid credientals'},status=HTTP_400_BAD_REQUEST)
+        return Response({'Message':'Invalid json keys'},status=HTTP_400_BAD_REQUEST)
 
