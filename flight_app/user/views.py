@@ -21,7 +21,6 @@ from django.utils.timezone import now
 # Create your views here.
 
 
-
 class CreateView(mixins.ListModelMixin,
                      mixins.CreateModelMixin,
                      generics.GenericAPIView):
