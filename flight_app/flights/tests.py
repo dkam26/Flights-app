@@ -7,7 +7,7 @@ from django.urls import reverse
 from .serializers import ListFlightSerializer
 from PIL import Image
 import tempfile
-import datetime
+from time import gmtime, strftime
 
 class ModelTestCase(TestCase):
     def setUp(self):
@@ -51,7 +51,7 @@ class ModelTestCase(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION='')
         response = self.client.post(
             reverse('flights'),
-            {'origin':"kampala", 'destination':"Nairobi","date":"datetime.now()},
+            {'origin':"kampala", 'destination':"Nairobi","date":strftime("%Y-%m-%d %H:%M", gmtime())},
             format='json')
         self.assertEqual(response.data, {'Message': 'No token provided'})
 
