@@ -30,3 +30,5 @@ class FlightSerializer(serializers.ModelSerializer):
     'plane_number',
     'seat_number',
     'user',)
+
+

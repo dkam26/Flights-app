@@ -25,6 +25,14 @@ SECRET_KEY = '7=6g%^9e+)kc!^b4-hm+zbzbh-))k)h&l3#s4!xya9v_$qvs95'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+BROKER_URL = 'amqp://localhost'
+CELERY_RESULT_BACKEND = 'amqp://localhost'
+# Celery Data Format
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Nairobi'
+
 ALLOWED_HOSTS = []
 
 
@@ -43,9 +51,12 @@ INSTALLED_APPS = [
     'user',
     'cloudinary',
 
+
 ]
 MEDIA_URL = 'flight_app/user/passport_photographs/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "passport_photographs")
+
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -67,9 +78,28 @@ cloudinary.config(
 )
 
 
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'deo.kamara@andela.com'
+EMAIL_HOST_PASSWORD = 'masiko26'
+
+
 AUTHENTICATION_BACKENDS = ('user.backends.MyAuthBackend',)
 
+BROKER_URL = 'amqp://[ipaddress]'
+CELERY_RESULT_BACKEND = 'amqp://[ipaddress]'
+# Celery Data Format
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Nairobi'
+
 AUTH_USER_MODEL = 'user.User'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -145,13 +175,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)
