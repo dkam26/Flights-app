@@ -20,9 +20,9 @@ before_script:
 #To run tests
 script:
   - cd flight_app/
+  - celery -A flight_app worker -l info
   - coverage run --source=user,flights manage.py test
   - coverage report -m
-
 
 after_success:
   - coveralls
