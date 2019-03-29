@@ -56,13 +56,13 @@ class ModelTestCase(TestCase):
         self.assertEqual(response.data, {'Message': 'No token provided'})
 
 
-    # def test_user_can_book_flight(self):
-    #     self.client.credentials(HTTP_AUTHORIZATION=self.token)
-    #     response = self.client.post(
-    #         reverse('book flight'),
-    #         {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04 14:34", "seat":"1A", "airline":"Kenyan airways"},
-    #         format='json')
-    #     self.assertEqual(response.data['airline'], 'Kenyan airways')
+    def test_user_can_book_flight(self):
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        response = self.client.post(
+            reverse('book flight'),
+            {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04 14:34", "seat":"1A", "airline":"Kenyan airways"},
+            format='json')
+        self.assertEqual(response.data['airline'], 'Kenyan airways')
 
     def test_user_cant_book_flight_with_wrong_seat(self):
         self.client.credentials(HTTP_AUTHORIZATION=self.token)
