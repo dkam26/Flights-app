@@ -15,6 +15,9 @@ from rest_framework import status
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+from flight_app.tasks import send_notification_email_task
+from datetime import datetime, timedelta
+from django.utils.timezone import now
 # Create your views here.
 
 
@@ -32,6 +35,7 @@ class CreateView(mixins.ListModelMixin,
             user_serializer = UserSerializer(data=request.data)
             if user_serializer.is_valid():
                 user_serializer.save()
+                tomorrow = datetime.utcnow() + timedelta(days=1)
                 return Response(user_serializer.data, status=status.HTTP_201_CREATED)
             return Response({'Message':'Wrong format/Email already exists'})
         return Response({'Message':'Invalid image type.Only .jpg and .png images allowed!'})
@@ -70,17 +74,19 @@ class LoginAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = UserLoginSerializer
     def post(self, request, format=None):
-        data = request.data
-        email = data.get('email')
-        password = data.get('password')
-        AuthBack = MyAuthBackend()
-        user = AuthBack.authenticate(email=email, password=password)
-        if user is not None:
-            if user.is_active:
-                token,_ = Token.objects.get_or_create(user=user)
-                return Response({'token':token.key}, status=HTTP_200_OK)
+        if list(request.data.keys()) == ['email', 'password']:
+            data = request.data
+            email = data.get('email')
+            password = data.get('password')
+            AuthBack = MyAuthBackend()
+            user = AuthBack.authenticate(email=email, password=password)
+            if user is not None:
+                if user.is_active:
+                    token,_ = Token.objects.get_or_create(user=user)
+                    return Response({'token':token.key}, status=HTTP_200_OK)
+                else:
+                    return Response({'Message':'Invalid credientals'},status=HTTP_400_BAD_REQUEST)
             else:
                 return Response({'Message':'Invalid credientals'},status=HTTP_400_BAD_REQUEST)
-        else:
-            return Response({'Message':'Invalid credientals'},status=HTTP_400_BAD_REQUEST)
+        return Response({'Message':'Invalid json keys'},status=HTTP_400_BAD_REQUEST)
 

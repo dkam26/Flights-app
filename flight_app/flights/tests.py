@@ -7,7 +7,7 @@ from django.urls import reverse
 from .serializers import ListFlightSerializer
 from PIL import Image
 import tempfile
-
+from time import gmtime, strftime
 
 class ModelTestCase(TestCase):
     def setUp(self):
@@ -15,7 +15,7 @@ class ModelTestCase(TestCase):
         tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
         image.save(tmp_file)
         with open(tmp_file.name, 'rb') as data:
-            self.user = {"name":"kamara", "password":"1234", "email":'kdeo@gmail.com', "passport_photograh":data}
+            self.user = {"name":"kamara", "password":"1234", "email":'gkam1989@gmail.com', "passport_photograh":data}
             self.client = APIClient()
             self.response = self.client.post(
                 reverse('create'),
@@ -43,24 +43,24 @@ class ModelTestCase(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=self.token)
         response = self.client.post(
             reverse('flights'),
-            {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04"},
+            {'origin':"kampala", 'destination':"Nairobi"},
             format='json')
-        self.assertEqual(response.data[0]['origin'], 'kampala')
+        self.assertIn('kampala', response.data[0].values())
 
     def test_available_flights_without_token(self):
         self.client.credentials(HTTP_AUTHORIZATION='')
         response = self.client.post(
             reverse('flights'),
-            {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04"},
+            {'origin':"kampala", 'destination':"Nairobi","date":strftime("%Y-%m-%d %H:%M", gmtime())},
             format='json')
-        self.assertEqual(response.data, 'No token provided')
+        self.assertEqual(response.data, {'Message': 'No token provided'})
 
 
     def test_user_can_book_flight(self):
         self.client.credentials(HTTP_AUTHORIZATION=self.token)
         response = self.client.post(
             reverse('book flight'),
-            {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04", "seat":"1A", "airline":"Kenyan airways"},
+            {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04 14:34", "seat":"1A", "airline":"Kenyan airways"},
             format='json')
         self.assertEqual(response.data['airline'], 'Kenyan airways')
 
@@ -68,22 +68,22 @@ class ModelTestCase(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=self.token)
         response = self.client.post(
             reverse('book flight'),
-            {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04", "seat":"AA", "airline":"Kenyan airways"},
+            {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04 14:34", "seat":"AA", "airline":"Kenyan airways"},
             format='json')
-        self.assertEqual(response.data, 'Seat doesnt exist')
+        self.assertEqual(response.data, {'Message': 'Seat already booked'})
 
     def test_user_cant_book_flight_without_token(self):
         self.client.credentials(HTTP_AUTHORIZATION='')
         response = self.client.post(
             reverse('book flight'),
-            {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04", "seat":"1A", "airline":"Kenyan airways"},
+            {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04 14:34", "seat":"1A", "airline":"Kenyan airways"},
             format='json')
-        self.assertEqual(response.data, 'No token provided')
+        self.assertEqual(response.data, {'Message': 'No token provided'})
 
     def test_user_cant_book_flight_that_doesnt_exist(self):
         self.client.credentials(HTTP_AUTHORIZATION=self.token)
         response = self.client.post(
             reverse('book flight'),
-            {'origin':"New york", 'destination':"Nairobi","date":"2019-03-04", "seat":"1A", "airline":"Kenyan airways"},
+            {'origin':"New york", 'destination':"Nairobi","date":"2019-03-04 14:34", "seat":"1A", "airline":"Kenyan airways"},
             format='json')
-        self.assertEqual(response.data, 'Flight doesnt exist')
+        self.assertEqual(response.data, {'Message': 'Flight doesnt exist'})
