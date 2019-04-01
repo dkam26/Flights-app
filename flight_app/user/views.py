@@ -2,13 +2,13 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from flight_app.user.models import User
 from rest_framework.authtoken.models import Token
-from user.serializers import UserSerializer, UserLoginSerializer, ChangeSerializer
+from flight_app.user.serializers import UserSerializer, UserLoginSerializer, ChangeSerializer
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.response import Response
-from user.backends import MyAuthBackend
+from flight_app.user.backends import MyAuthBackend
 from rest_framework import permissions
 from rest_framework.response import Response
-from user.serializers import UserSerializer, ChangeSerializer
+from flight_app.user.serializers import UserSerializer, ChangeSerializer
 from rest_framework import mixins, generics
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 from rest_framework import status
