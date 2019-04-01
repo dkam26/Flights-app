@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework',
     'flight_app.flights',
-    'user',
+    'flight_app.user',
     'cloudinary',
 
 
