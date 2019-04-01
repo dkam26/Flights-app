@@ -15,7 +15,7 @@ from rest_framework import status
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-from flight_app.tasks import send_notification_email_task
+from flight_app.flight_app.tasks import send_notification_email_task
 from datetime import datetime, timedelta
 from django.utils.timezone import now
 # Create your views here.
