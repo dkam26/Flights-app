@@ -1,4 +1,4 @@
-from user.views import CreateView, LoginAPIView
+from flight_app.user.views import CreateView, LoginAPIView
 from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.views.decorators.csrf import csrf_exempt
