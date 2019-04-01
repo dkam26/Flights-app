@@ -1,4 +1,4 @@
-from user.models import User
+from flight_app.user.models import User
 import logging
 
 class MyAuthBackend(object):
