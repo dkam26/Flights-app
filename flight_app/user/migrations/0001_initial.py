@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 'abstract': False,
             },
             managers=[
-                ('objects', user.models.UserManager()),
+                ('objects', flight_app.user.models.UserManager()),
             ],
         ),
     ]
