@@ -115,7 +115,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'flight_app.urls'
+ROOT_URLCONF = 'flight_app.flight_app.urls'
 
 TEMPLATES = [
     {
