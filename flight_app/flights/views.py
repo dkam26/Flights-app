@@ -5,7 +5,7 @@ from flight_app.flights.serializers import  ListFlightSerializer, FlightSerializ
 from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework.response import Response
-from flight_app.light_app.settings import SECRET_KEY
+from flight_app.flight_app.settings import SECRET_KEY
 from rest_framework.authtoken.models import Token
 from django.core import serializers
 from flight_app.flight_app.tasks import send_notification_email_task

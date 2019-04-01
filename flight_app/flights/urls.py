@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
-from .views import ListFlightView, CreateView, DetailsView
+from flight_app.flights.views import ListFlightView, CreateView, DetailsView
 
 
 urlpatterns = {
