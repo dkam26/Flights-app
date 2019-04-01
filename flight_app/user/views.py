@@ -1,6 +1,6 @@
 from rest_framework import generics
 from rest_framework.views import APIView
-from user.models import User
+from flight_app.user.models import User
 from rest_framework.authtoken.models import Token
 from user.serializers import UserSerializer, UserLoginSerializer, ChangeSerializer
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
