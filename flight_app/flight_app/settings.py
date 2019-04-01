@@ -36,7 +36,6 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Nairobi'
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -81,7 +80,7 @@ cloudinary.config(
 )
 
 
-ALLOWED_HOSTS =[*]
+ALLOWED_HOSTS =['*']
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
@@ -193,5 +192,3 @@ USE_L10N = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
-django_heroku.settings(locals())
