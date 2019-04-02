@@ -72,6 +72,16 @@ class ModelTestCase(TestCase):
         self.assertEqual(response.data, {'Message':'Invalid image type.Only .jpg and .png images allowed!'})
 
 
+    def test_model_cant_create_an_account_without_image(self):
+        user = {"name":"kamara", "password":"1t@frhyktt", "email":'ukdf@gmail.com', "passport_photograh":''}
+        client = APIClient()
+        response = client.post(
+            reverse('create'),
+            user,
+            format='multipart')
+        self.assertEqual(response.data, {'Message':'Profile picture is required'})
+
+
 
     def test_user_can_login(self):
 
