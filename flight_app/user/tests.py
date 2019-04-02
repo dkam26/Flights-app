@@ -31,6 +31,20 @@ class ModelTestCase(TestCase):
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
 
 
+    def test_model_cant_create_a_account_with_short_password(self):
+        image = Image.new('RGB', (100, 100))
+        tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
+        image.save(tmp_file)
+        with open(tmp_file.name, 'rb') as data:
+            self.user = {"name":"kamara", "password":"1thyktt", "email":'kd@gmail.com', "passport_photograh":data}
+            self.client = APIClient()
+            response = self.client.post(
+                reverse('create'),
+                self.user,
+                format='multipart')
+        self.assertEqual(response.data, {'Message':'The password should contain atleast a special character,number and should be 8-12 characters'})
+
+
 
     def test_user_can_login(self):
 
