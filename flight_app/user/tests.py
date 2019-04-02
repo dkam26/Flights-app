@@ -36,11 +36,11 @@ class ModelTestCase(TestCase):
         tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
         image.save(tmp_file)
         with open(tmp_file.name, 'rb') as data:
-            self.user = {"name":"kamara", "password":"1thyktt", "email":'kd@gmail.com', "passport_photograh":data}
-            self.client = APIClient()
-            response = self.client.post(
+            user = {"name":"kamara", "password":"1thyktt", "email":'kd@gmail.com', "passport_photograh":data}
+            client = APIClient()
+            response = client.post(
                 reverse('create'),
-                self.user,
+                user,
                 format='multipart')
         self.assertEqual(response.data, {'Message':'The password should contain atleast a special character,number and should be 8-12 characters'})
 
