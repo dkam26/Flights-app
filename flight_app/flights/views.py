@@ -81,7 +81,7 @@ class DetailsView(APIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = FlightSerializer
 
-    def post(self, request, format=None):
+    def get(self, request, format=None):
         if 'HTTP_AUTHORIZATION' in list(request.META.keys()):
             if request.META['HTTP_AUTHORIZATION']:
                 token = request.META['HTTP_AUTHORIZATION']
@@ -94,3 +94,4 @@ class DetailsView(APIView):
                     Response({'Message':'Invalid Token!'})
             return Response({'Message':'No token provided'})
         return Response({'Message':'Missing token key'})
+

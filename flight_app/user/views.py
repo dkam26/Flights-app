@@ -18,6 +18,7 @@ import cloudinary.api
 from flight_app.flight_app.tasks import send_notification_email_task
 from datetime import datetime, timedelta
 from django.utils.timezone import now
+import re
 # Create your views here.
 
 
@@ -28,48 +29,64 @@ class CreateView(mixins.ListModelMixin,
     serializer_class = (UserSerializer, ChangeSerializer)
     permission_classes = (permissions.AllowAny,)
     def post(self, request, *args, **kwargs):
-        image_url = request.FILES['passport_photograh']
-        if image_url.name.endswith('.jpg') or image_url.name.endswith('.png'):
-            passport_photograh_url = cloudinary.uploader.upload(request.FILES['passport_photograh'])
-            request.data['passport_photograh'] = passport_photograh_url['secure_url']
-            user_serializer = UserSerializer(data=request.data)
-            if user_serializer.is_valid():
-                user_serializer.save()
-                tomorrow = datetime.utcnow() + timedelta(days=1)
-                return Response(user_serializer.data, status=status.HTTP_201_CREATED)
-            return Response({'Message':'Wrong format/Email already exists'})
-        return Response({'Message':'Invalid image type.Only .jpg and .png images allowed!'})
+        file_exists = request.FILES.get('passport_photograh', False)
+        if file_exists:
+            image_url = request.FILES['passport_photograh']
+            if image_url.name.endswith('.jpg') or image_url.name.endswith('.png'):
+                passport_photograh_url = cloudinary.uploader.upload(request.FILES['passport_photograh'])
+                request.data['passport_photograh'] = passport_photograh_url['secure_url']
+
+                user_serializer = UserSerializer(data=request.data)
+                if user_serializer.is_valid():
+                    if re.match(r'^(?=.*[\d])(?=.*[a-z])(?=.*[@#$])[\w\d@#$]{8,12}$', request.data['password']):
+                        user_serializer.save()
+                        tomorrow = datetime.utcnow() + timedelta(days=1)
+                        return Response(user_serializer.data, status=status.HTTP_201_CREATED)
+                    return Response({'Message':'The password should contain atleast a special character,number and should be 8-12 characters'})
+                return Response({'Message':'Wrong format/Email already exists'})
+            return Response({'Message':'Invalid image type.Only .jpg and .png images allowed!'})
+        return Response({'Message':'Profile picture is required'})
     def put(self, request, *args, **kwargs):
-        if request.META['HTTP_AUTHORIZATION']:
-            token = request.META['HTTP_AUTHORIZATION']
-            user_id = Token.objects.values_list('user_id', flat=True).get(key=token)
-            if user_id:
-                passport_photograh = request.FILES['passport_photograh']
-                if passport_photograh.name.endswith('.jpg') or passport_photograh.name.endswith('.png'):
-                    passport_photograh_url = cloudinary.uploader.upload(passport_photograh)
-                    user = User.objects.get(id=user_id)
-                    user.passport_photograh = passport_photograh_url['secure_url']
-                    user.save()
-                    return Response({'Message':'Image successfully changed'})
+        token_key = request.META.get('HTTP_AUTHORIZATION', False)
+        if token_key:
+            if request.META['HTTP_AUTHORIZATION']:
+                token = request.META['HTTP_AUTHORIZATION']
+
+                token_exists = Token.objects.filter(key=token)
+                if token_exists:
+                    user_id = Token.objects.values_list('user_id', flat=True).get(key=token)
+                    file_exists = request.FILES.get('passport_photograh', False)
+                    if file_exists:
+                        passport_photograh = request.FILES['passport_photograh']
+                        if passport_photograh.name.endswith('.jpg') or passport_photograh.name.endswith('.png'):
+                            passport_photograh_url = cloudinary.uploader.upload(passport_photograh)
+                            user = User.objects.get(id=user_id)
+                            user.passport_photograh = passport_photograh_url['secure_url']
+                            user.save()
+                            return Response({'Message':'Image successfully changed'})
+                        else:
+                            return Response({'Message':'Invalid image type.Only .jpg and .png images allowed!'})
+                    return Response({'Message':'Profile picture is required'})
                 else:
-                    return Response({'Message':'Invalid image type.Only .jpg and .png images allowed!'})
-            else:
-                return Response({'Message':'Invalid Token'})
-        return Response({'Message':'No token provided'})
+                    return Response({'Message':'Invalid Token'})
+            return Response({'Message':'No token provided'})
+        return Response({'Message':'Missing token key'})
     def delete(self, request, *args, **kwargs):
-        if request.META['HTTP_AUTHORIZATION']:
-            token = request.META['HTTP_AUTHORIZATION']
-            user_id = Token.objects.values_list('user_id', flat=True).get(key=token)
-            if user_id:
-                user = User.objects.get(id=user_id)
-                user.passport_photograh = ''
-                user.save()
-                return Response({'Message':'Image successfully removed'})
-            else:
-                return Response({'Message':'Invalid token'})
-
-        return Response({'Message':'No token provided'})
-
+        token_key = request.META.get('HTTP_AUTHORIZATION', False)
+        if token_key:
+            if request.META['HTTP_AUTHORIZATION']:
+                token = request.META['HTTP_AUTHORIZATION']
+                token_exists = Token.objects.filter(key=token)
+                if token_exists:
+                    user_id = Token.objects.values_list('user_id', flat=True).get(key=token)
+                    user = User.objects.get(id=user_id)
+                    user.passport_photograh = ''
+                    user.save()
+                    return Response({'Message':'Image successfully removed'})
+                else:
+                    return Response({'Message':'Invalid token'})
+            return Response({'Message':'No token provided'})
+        return Response({'Message':'Missing token key'})
 class LoginAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = UserLoginSerializer
