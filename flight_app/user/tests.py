@@ -45,6 +45,33 @@ class ModelTestCase(TestCase):
         self.assertEqual(response.data, {'Message':'The password should contain atleast a special character,number and should be 8-12 characters'})
 
 
+     def test_model_cant_create_a_account_with_existing_email(self):
+        image = Image.new('RGB', (100, 100))
+        tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
+        image.save(tmp_file)
+        with open(tmp_file.name, 'rb') as data:
+            user = {"name":"kamara", "password":"1thyktt", "email":'kd@gmail.com', "passport_photograh":data}
+            client = APIClient()
+            response = client.post(
+                reverse('create'),
+                user,
+                format='multipart')
+        self.assertEqual(response.data, {'Message':'Wrong format/Email already exists'})
+
+    def test_model_cant_create_an_account_with_invalid_image(self):
+        image = Image.new('RGB', (100, 100))
+        tmp_file = tempfile.NamedTemporaryFile(suffix='.csv')
+        image.save(tmp_file)
+        with open(tmp_file.name, 'rb') as data:
+            user = {"name":"kamara", "password":"1t@frhyktt", "email":'ukdf@gmail.com', "passport_photograh":data}
+            client = APIClient()
+            response = client.post(
+                reverse('create'),
+                user,
+                format='multipart')
+        self.assertEqual(response.data, {'Message':'Invalid image type.Only .jpg and .png images allowed!'})
+
+
 
     def test_user_can_login(self):
 
