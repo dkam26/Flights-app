@@ -19,7 +19,7 @@ A user can view their booked flights
 
 A user can view all available flights
 
-A user is required to include an e-mail address, name, first name,profile picture(.jpg and .png images ONLY) and password on creating an account
+A user is required to include an e-mail address, name,profile picture(.jpg and .png images ONLY) and password on creating an account
 
 
 
