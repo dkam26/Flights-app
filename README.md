@@ -65,7 +65,7 @@ POST | /book/flight/ | False | Book a flight
 GET | /user/flights/ | False | View details of a user's scheduled flights
 
 
-## To book a flight,following the steps:
+## To book a flight:
 - Create an account
     METHOD=POST
     https://flight-app-output.herokuapp.com/auth/register/
