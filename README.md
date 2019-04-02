@@ -62,7 +62,68 @@ HTTP Method|End point | Public Access|Action
 -----------|----------|--------------|------
 POST | /flights/ | False | View all flights
 POST | /book/flight/ | False | Book a flight
-GET | /user/flights/ | False | View details of a shopping list
+GET | /user/flights/ | False | View details of a user's scheduled flights
+
+
+## To book a flight,following the steps:
+- Create an account
+    METHOD=POST
+    https://flight-app-output.herokuapp.com/auth/register/
+    {
+       "passport_photograh":passport_photograh.jpg,
+       "name":"kamara deo",
+       "email":"deo.kamara@andela.com",
+       "password":"1@thyktt"
+    }
+
+- Login
+    METHOD=POST
+    https://flight-app-output.herokuapp.com/auth/login/
+    {
+       "email":"deo.kamara@andela.com",
+       "password":"1@thyktt"
+    }
+
+-  Update the profile pic
+    METHOD=PUT
+    Authorization=Token
+    https://flight-app-output.herokuapp.com/auth/register/
+    {
+       "passport_photograh":new_passport_photograh.jpg
+    }
+
+- Delete the profile pic
+   METHOD=DELETE
+   Authorization=Token
+   https://flight-app-output.herokuapp.com/auth/register/
+
+- View all flights
+   METHOD=POST
+   Authorization=Token
+   https://flight-app-output.herokuapp.com/flights/
+    {
+       "origin": "Kampala",
+       "destination": "Nairobi"
+    }
+
+- Book a flight
+   METHOD=POST
+   Authorization=Token
+   https://flight-app-output.herokuapp.com/book/flight/
+    {
+      	"origin":"Nairobi",
+	    "destination":"Kampala",
+	    "date":"2019-04-02 02:00",
+	    "seat":"1A",
+	    "airline": "Kenyan airways"
+    }
+
+- View a user's flights
+   METHOD=GET
+   Authorization=Token
+   https://flight-app-output.herokuapp.com/user/flights/
+
+
 
 
 
