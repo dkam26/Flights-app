@@ -38,40 +38,14 @@ The tests are to confirm the connection to the database,accounts creation,login 
 
 To run the tests,use:
 
-nosetests --with-coverage --cover-package=my_app tests/
+coverage run --source=flight_app manage.py test
 
 
 ## Getting Started
 
-### Prerequisites
-1. Install requirements, run
-```sh
-     pip install -r requirements.txt
-```
-2. Database configuration.
-   - Download and install postgres from [here](https://www.postgresql.org/download/)
-   - Create database in terminal
-   ```sh
-      psql postgres;
-      CREATE DATABASE database_name;
-   ```
-   - Connect the application to the database by changing the ``` POSTGRES ``` variable in shopping_list/app/__init__.py.
-   ```
-      POSTGRES = {
-            'user': 'database user',
-            'pw': 'user password',
-            'db': 'database name',
-            'host': 'localhost',
-            'port': '5432',
-            }
-   ```
-3. To create database tables, from the project's repository run
-```sh
-    $ python manage.py db init
-    $ python manage.py db migrate
-    $ python manage.py db upgrade
-    $ python run.py runserver
- ```
+## URL of the API
+
+https://flight-app-output.herokuapp.com/
 
 ## End points
 ### Endpoints to create a user account and login into the application
@@ -79,25 +53,18 @@ HTTP Method|End point | Public Access|Action
 -----------|----------|--------------|------
 POST | /auth/register/ | True | Create an account
 POST | /auth/login/ | True | Login a user
-POST | /auth/logout/ | False | Logout a user
-POST | /auth/RestPassword/ | False | Reset a user password
+PUT  |  /auth/register/ | False | Change proflie image
+DELETE  |  /auth/register/ | False | Delete proflie image
+
 
 ### Endpoints to create, update, view and delete a shopping list
 HTTP Method|End point | Public Access|Action
 -----------|----------|--------------|------
-POST | /shoppinglists/ | False | Create a shopping list
-GET | /shoppinglists/ | False | View all shopping lists
-GET | /shoppinglist/<list_id> | False | View details of a shopping list
-PUT | /shoppinglists/<list_id> | False | Updates a shopping list with a given id
-DELETE | /shoppinglists/<list_id> | False | Deletes a shopping list with a given id
+POST | /flights/ | False | View all flights
+POST | /book/flight/ | False | Book a flight
+GET | /user/flights/ | False | View details of a shopping list
 
-### Endpoints to create, update, view and delete a shopping list item
-HTTP Method|End point | Public Access|Action
------------|----------|--------------|------
-POST | /shoppinglists/<list_id>/items/ | False | Add an Item to a shopping list
-PUT | /shoppinglists/<list_id>/items/<item_id> | False | Update a shopping list item on a given list
-GET | /shoppinglists/<list_id>/items/ | False | View items in a particular shopping list
-DELETE | /shoppinglists/<list_id>/items/<item_id> | False | Delete an item from a given shopping list
+
 
 
 
