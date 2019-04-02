@@ -19,8 +19,7 @@ before_script:
 
 #To run tests
 script:
-  - cd flight_app/
-  - coverage run --source=user,flights manage.py test
+  - coverage run --source=flight_app manage.py test
   - coverage report -m
 
 after_success:

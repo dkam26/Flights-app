@@ -1,4 +1,4 @@
-from user.models import User
+from flight_app.user.models import User
 from .models import AvailableFlights, Tickets
 from django.test import TestCase
 from rest_framework.test import APIClient
@@ -15,7 +15,7 @@ class ModelTestCase(TestCase):
         tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
         image.save(tmp_file)
         with open(tmp_file.name, 'rb') as data:
-            self.user = {"name":"kamara", "password":"1234", "email":'gkam1989@gmail.com', "passport_photograh":data}
+            self.user = {"name":"kamara", "password":"1@thyktt", "email":'gkam1989@gmail.com', "passport_photograh":data}
             self.client = APIClient()
             self.response = self.client.post(
                 reverse('create'),
