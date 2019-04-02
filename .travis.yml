@@ -5,6 +5,9 @@ python:
 addons:
   postgresql: "9.4"
 
+services:
+  - rabbitmq
+
 #To install dependences
 install:
   - pip install -r requirements.txt
@@ -16,8 +19,7 @@ before_script:
 
 #To run tests
 script:
-  - cd flight_app/
-  - coverage run --source=flights manage.py test
+  - coverage run --source=flight_app manage.py test
   - coverage report -m
 
 after_success:

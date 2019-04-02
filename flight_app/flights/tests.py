@@ -1,53 +1,89 @@
+from flight_app.user.models import User
+from .models import AvailableFlights, Tickets
 from django.test import TestCase
-import datetime
-# Create your tests here.
-from .models import Flight
 from rest_framework.test import APIClient
 from rest_framework import status
 from django.urls import reverse
-from user.models import User
-from django.utils import timezone
+from .serializers import ListFlightSerializer
+from PIL import Image
+import tempfile
+from time import gmtime, strftime
 
 class ModelTestCase(TestCase):
     def setUp(self):
-        self.user = User.objects.create(name="kamara", password='1234', email='kd@gmail.com')
-        self.client = APIClient()
-        self.origin =  'Kampala'
-        self.destination = 'Boston'
-        self.flight_date = datetime.datetime.now()
-        self.flight_data = {'user':self.user.id, 'origin': self.origin, 'destination': self.destination, 'flight_date': timezone.now()}
-        self.response = self.client.post(
-            reverse('create'),
-            self.flight_data,
-            format="json")
+        image = Image.new('RGB', (100, 100))
+        tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
+        image.save(tmp_file)
+        with open(tmp_file.name, 'rb') as data:
+            self.user = {"name":"kamara", "password":"1@thyktt", "email":'gkam1989@gmail.com', "passport_photograh":data}
+            self.client = APIClient()
+            self.response = self.client.post(
+                reverse('create'),
+                self.user,
+                format='multipart')
+            res = self.client.post(
+            reverse('login'),
+            {'email':self.user['email'], 'password':self.user['password']},
+            format='json')
+            self.token = res.data['token']
+        self.flight = {"id":1,"airline":"Kenyan airways",
+                       "origin":"kampala",
+                       "destination":"Nairobi",
+                       "available_seats":30,
+                       "date":"2019-03-04T14:34",
+                       "plane_number":"43W",
+                       "seats":{"seats":["1A","1B","1C","1D","1E","1F","2A","2B","2C","2D","2E","2F","3A","3B","3C","3D","3E","3F", "4A","4B","4C","4D","4E","4F", "5A","5B","5C","5D","5E","5F"]} }
+        serialzer = ListFlightSerializer(data=self.flight)
+        if serialzer.is_valid():
+            serialzer.save()
 
-    def test_model_can_book_a_flight(self):
-        self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
 
 
-    def test_api_can_delete_flight(self):
-        flight = Flight.objects.get()
-        response = self.client.delete(
-            reverse('details', kwargs={'pk': flight.id}),
-            format='json',
-            follow=True)
-        self.assertEquals(response.status_code, status.HTTP_204_NO_CONTENT)
+    def test_available_flights(self):
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        response = self.client.post(
+            reverse('flights'),
+            {'origin':"kampala", 'destination':"Nairobi"},
+            format='json')
+        self.assertIn('kampala', response.data[0].values())
 
-    def test_api_can_get_a_bucketlist(self):
-        flight = Flight.objects.get()
-        response = self.client.get(
-            reverse('details', kwargs={'pk': flight.id}),
-            format='json',
-            follow=True)
+    def test_available_flights_without_token(self):
+        self.client.credentials(HTTP_AUTHORIZATION='')
+        response = self.client.post(
+            reverse('flights'),
+            {'origin':"kampala", 'destination':"Nairobi","date":strftime("%Y-%m-%d %H:%M", gmtime())},
+            format='json')
+        self.assertEqual(response.data, {'Message': 'No token provided'})
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertContains(response, flight)
 
-    def test_api_can_update_bucketlist(self):
-        flight = Flight.objects.get()
-        change_flight_data = {'user':self.user.id, 'origin': 'Chicago', 'destination': 'Cuba', 'flight_date': timezone.now()}
-        res = self.client.put(
-            reverse('details', kwargs={'pk': flight.id}),
-            change_flight_data, format='json'
-        )
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
+    def test_user_can_book_flight(self):
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        response = self.client.post(
+            reverse('book flight'),
+            {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04 14:34", "seat":"1A", "airline":"Kenyan airways"},
+            format='json')
+        self.assertEqual(response.data['airline'], 'Kenyan airways')
+
+    def test_user_cant_book_flight_with_wrong_seat(self):
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        response = self.client.post(
+            reverse('book flight'),
+            {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04 14:34", "seat":"AA", "airline":"Kenyan airways"},
+            format='json')
+        self.assertEqual(response.data, {'Message': 'Seat already booked'})
+
+    def test_user_cant_book_flight_without_token(self):
+        self.client.credentials(HTTP_AUTHORIZATION='')
+        response = self.client.post(
+            reverse('book flight'),
+            {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04 14:34", "seat":"1A", "airline":"Kenyan airways"},
+            format='json')
+        self.assertEqual(response.data, {'Message': 'No token provided'})
+
+    def test_user_cant_book_flight_that_doesnt_exist(self):
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        response = self.client.post(
+            reverse('book flight'),
+            {'origin':"New york", 'destination':"Nairobi","date":"2019-03-04 14:34", "seat":"1A", "airline":"Kenyan airways"},
+            format='json')
+        self.assertEqual(response.data, {'Message': 'Flight doesnt exist'})

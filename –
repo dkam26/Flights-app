@@ -1,0 +1,24 @@
+[2019-04-01 20:23:13 +0300] [29701] [INFO] Starting gunicorn 19.9.0
+[2019-04-01 20:23:13 +0300] [29701] [INFO] Listening at: http://0.0.0.0:5000 (29701)
+[2019-04-01 20:23:13 +0300] [29701] [INFO] Using worker: sync
+[2019-04-01 20:23:13 +0300] [29704] [INFO] Booting worker with pid: 29704
+[2019-04-01 20:23:13 +0300] [29704] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/Users/deokamara/Desktop/Flights-app/env/lib/python3.7/site-packages/gunicorn/arbiter.py", line 583, in spawn_worker
+    worker.init_process()
+  File "/Users/deokamara/Desktop/Flights-app/env/lib/python3.7/site-packages/gunicorn/workers/base.py", line 129, in init_process
+    self.load_wsgi()
+  File "/Users/deokamara/Desktop/Flights-app/env/lib/python3.7/site-packages/gunicorn/workers/base.py", line 138, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/deokamara/Desktop/Flights-app/env/lib/python3.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/deokamara/Desktop/Flights-app/env/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load
+    return self.load_wsgiapp()
+  File "/Users/deokamara/Desktop/Flights-app/env/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 41, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/deokamara/Desktop/Flights-app/env/lib/python3.7/site-packages/gunicorn/util.py", line 350, in import_app
+    __import__(module)
+ModuleNotFoundError: No module named 'flight_app.wsgi'
+[2019-04-01 20:23:13 +0300] [29704] [INFO] Worker exiting (pid: 29704)
+[2019-04-01 20:23:13 +0300] [29701] [INFO] Shutting down: Master
+[2019-04-01 20:23:13 +0300] [29701] [INFO] Reason: Worker failed to boot.

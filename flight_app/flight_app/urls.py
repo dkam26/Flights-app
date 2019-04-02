@@ -20,6 +20,6 @@ from django.conf.urls import  url, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^', include('user.urls')),
-    url(r'^', include('flights.urls')),
+    url(r'^', include('flight_app.user.urls')),
+    url(r'^', include('flight_app.flights.urls')),
 ]

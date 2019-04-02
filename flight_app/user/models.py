@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
+from django.core.files.storage import FileSystemStorage
 # Create your models here.
-
+fs = FileSystemStorage(location='/passport_photograhs')
 class UserManager(BaseUserManager):
 
     use_in_migrations = True
@@ -40,9 +41,10 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     email = models.EmailField( unique=True)
     name = models.CharField(max_length=100)
+    passport_photograh = models.CharField(max_length=1000)
     USERNAME_FIELD = 'email'
     objects = UserManager()
 
     def __str__(self):
-        return self.name
+        return self.email
 

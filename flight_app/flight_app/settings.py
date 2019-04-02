@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import dj_database_url
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +28,14 @@ SECRET_KEY = '7=6g%^9e+)kc!^b4-hm+zbzbh-))k)h&l3#s4!xya9v_$qvs95'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+BROKER_URL = 'amqp://localhost'
+CELERY_RESULT_BACKEND = 'amqp://localhost'
+# Celery Data Format
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Nairobi'
+
 
 
 # Application definition
@@ -37,13 +47,63 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'rest_framework',
-    'flights',
-    'user',
+    'flight_app.flights',
+    'flight_app.user',
+    'cloudinary',
+
 
 ]
+MEDIA_URL = 'flight_app/user/passport_photographs/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "passport_photographs")
+
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated', ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ]
+
+}
+import cloudinary
+
+cloudinary.config(
+  cloud_name = "flightapp",
+  api_key = "816736129758431",
+  api_secret = "JOvjTau0oQfafYr2MNHJieNtxoQ"
+)
+
+
+ALLOWED_HOSTS =['*']
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'deo.kamara@andela.com'
+EMAIL_HOST_PASSWORD = 'masiko26'
+
+
+AUTHENTICATION_BACKENDS = ('user.backends.MyAuthBackend',)
+
+BROKER_URL = 'amqp://[ipaddress]'
+CELERY_RESULT_BACKEND = 'amqp://[ipaddress]'
+# Celery Data Format
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Nairobi'
 
 AUTH_USER_MODEL = 'user.User'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,7 +115,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'flight_app.urls'
+ROOT_URLCONF = 'flight_app.flight_app.urls'
 
 TEMPLATES = [
     {
@@ -93,6 +153,8 @@ DATABASES = {
     }
 }
 
+if os.environ.get("DATABASE_URL"):
+    DATABASES['default'] = dj_database_url.config()
 
 
 # Password validation
@@ -119,13 +181,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)
