@@ -5,8 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = {
-    url(r'user/$', CreateView.as_view(), name="create"),
-    url(r'login/$', LoginAPIView.as_view(), name='login'),
+    url(r'auth/register/$', CreateView.as_view(), name="create"),
+    url(r'auth/login/$', LoginAPIView.as_view(), name='login'),
 }
 
 urlpatterns = format_suffix_patterns(urlpatterns)
