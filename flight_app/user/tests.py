@@ -36,7 +36,7 @@ class ModelTestCase(TestCase):
         tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
         image.save(tmp_file)
         with open(tmp_file.name, 'rb') as data:
-            user = {"name":"kamara", "password":"1thyktt", "email":'kd@gmail.com', "passport_photograh":data}
+            user = {"name":"kamara", "password":"1thyktt", "email":'ukd@gmail.com', "passport_photograh":data}
             client = APIClient()
             response = client.post(
                 reverse('create'),
