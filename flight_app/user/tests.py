@@ -60,7 +60,7 @@ class ModelTestCase(TestCase):
 
     def test_model_cant_create_an_account_with_invalid_image(self):
         image = Image.new('RGB', (100, 100))
-        tmp_file = tempfile.NamedTemporaryFile(suffix='.csv')
+        tmp_file = tempfile.NamedTemporaryFile(suffix='.jpeg')
         image.save(tmp_file)
         with open(tmp_file.name, 'rb') as data:
             user = {"name":"kamara", "password":"1t@frhyktt", "email":'ukdf@gmail.com', "passport_photograh":data}
