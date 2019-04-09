@@ -69,12 +69,14 @@ GET | /user/flights/ | False | View details of a user's scheduled flights
 - Create an account
     METHOD=POST
     https://flight-app-output.herokuapp.com/auth/register/
+    ```
     {
        "passport_photograh":passport_photograh.jpg,
        "name":"kamara deo",
        "email":"deo.kamara@andela.com",
        "password":"1@thyktt"
     }
+    ```
 
 - Login
     METHOD=POST
@@ -90,9 +92,11 @@ GET | /user/flights/ | False | View details of a user's scheduled flights
     METHOD=PUT
     Authorization=Token
     https://flight-app-output.herokuapp.com/auth/register/
+    ```
     {
        "passport_photograh":new_passport_photograh.jpg
     }
+    ```
 
 - Delete the profile pic
    METHOD=DELETE
@@ -103,15 +107,18 @@ GET | /user/flights/ | False | View details of a user's scheduled flights
    METHOD=POST
    Authorization=Token
    https://flight-app-output.herokuapp.com/flights/
+   ```
     {
        "origin": "Kampala",
        "destination": "Nairobi"
     }
+   ```
 
 - Book a flight
    METHOD=POST
    Authorization=Token
    https://flight-app-output.herokuapp.com/book/flight/
+   ```
     {
       	"origin":"Nairobi",
 	    "destination":"Kampala",
@@ -119,6 +126,7 @@ GET | /user/flights/ | False | View details of a user's scheduled flights
 	    "seat":"1A",
 	    "airline": "Kenyan airways"
     }
+   ```
 
 - View a user's flights
    METHOD=GET
