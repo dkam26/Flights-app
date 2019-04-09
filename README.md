@@ -79,10 +79,12 @@ GET | /user/flights/ | False | View details of a user's scheduled flights
 - Login
     METHOD=POST
     https://flight-app-output.herokuapp.com/auth/login/
+    ```
     {
        "email":"deo.kamara@andela.com",
        "password":"1@thyktt"
     }
+    ```
 
 -  Update the profile pic
     METHOD=PUT
