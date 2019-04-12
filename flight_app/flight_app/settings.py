@@ -28,8 +28,8 @@ SECRET_KEY = '7=6g%^9e+)kc!^b4-hm+zbzbh-))k)h&l3#s4!xya9v_$qvs95'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-BROKER_URL = 'amqp://0p6fCeK1JYnLor451hBgg7gk3pJtxCUx@chimpanzee.rmq.cloudamqp.com'
-CELERY_RESULT_BACKEND = 'amqp://0p6fCeK1JYnLor451hBgg7gk3pJtxCUx@chimpanzee.rmq.cloudamqp.com'
+BROKER_URL = 'http://0.0.0.0:44561'
+CELERY_RESULT_BACKEND = 'http://0.0.0.0:44561'
 # Celery Data Format
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
