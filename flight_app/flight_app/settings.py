@@ -82,6 +82,9 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'deo.kamara@andela.com'
 EMAIL_HOST_PASSWORD = 'masiko26'
 
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
 
 AUTHENTICATION_BACKENDS = ('user.backends.MyAuthBackend',)
 
