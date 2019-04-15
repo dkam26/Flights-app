@@ -6,7 +6,7 @@ addons:
   postgresql: "9.4"
 
 services:
-  - rabbitmq
+  - redis-server
 
 #To install dependences
 install:
