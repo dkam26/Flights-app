@@ -88,8 +88,8 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 AUTHENTICATION_BACKENDS = ('user.backends.MyAuthBackend',)
 
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_URL = 'redis://h:p238ff8d824b4795ffb363460fdfeb9e9e497c66eace92cf9df863db3192b589e@ec2-3-212-41-253.compute-1.amazonaws.com:21419'
+CELERY_RESULT_BACKEND = 'redis://h:p238ff8d824b4795ffb363460fdfeb9e9e497c66eace92cf9df863db3192b589e@ec2-3-212-41-253.compute-1.amazonaws.com:21419'
 # Celery Data Format
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
