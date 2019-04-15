@@ -3,7 +3,7 @@ from celery import Celery
 import os
 from .settings import INSTALLED_APPS
 # Setting the Default Django settings module
-os.environ.setdefault('DJANGO_SETTINGS_MODULE','flight_app.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE','flight_app.flight_app.settings')
 app=Celery('flight_app')
 
 

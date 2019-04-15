@@ -9,5 +9,6 @@ logger=get_task_logger(__name__)
 @shared_task(name="send_notification_email_task")
 def send_notification_email_task(name,email,date,origin,destination):
     logger.info("Sent email")
+    
     return send_notification_email(name,email,date,origin,destination)
 
