@@ -8,6 +8,8 @@ from .serializers import ListFlightSerializer
 from PIL import Image
 import tempfile
 from time import gmtime, strftime
+from datetime import datetime
+from dateutil.parser import parse
 
 class ModelTestCase(TestCase):
     def setUp(self):
@@ -60,8 +62,11 @@ class ModelTestCase(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=self.token)
         response = self.client.post(
             reverse('book flight'),
-            {'origin':"kampala", 'destination':"Nairobi","date":"2019-03-04 14:34", "seat":"1A", "airline":"Kenyan airways"},
+            {'origin':"kampala", 'destination':"Nairobi","date": '2019-03-04 14:34', "seat":"1A", "airline":"Kenyan airways"},
             format='json')
+        print('\n\n\n\n')
+        print( parse('2019-03-04 14:34'))
+        print('\n\n\n\n')
         self.assertEqual(response.data['airline'], 'Kenyan airways')
 
     def test_user_cant_book_flight_with_wrong_seat(self):

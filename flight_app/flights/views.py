@@ -36,11 +36,6 @@ class ListFlightView(APIView):
         return Response({'Message':'Missing token key'})
 
 
-class WelcomeView(APIView):
-    permission_classes = (permissions.AllowAny,)
-    def get(self, request, format=None):
-        return HttpResponse('Welcome to flight api')
-
 
 class CreateView(APIView):
     serializer_class = FlightSerializer
