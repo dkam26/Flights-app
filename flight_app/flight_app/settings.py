@@ -28,15 +28,6 @@ SECRET_KEY = '7=6g%^9e+)kc!^b4-hm+zbzbh-))k)h&l3#s4!xya9v_$qvs95'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-BROKER_URL = 'amqp://ulrfhjmm:EC84usIMUx3iEKetQo-W_otSQIMpdLub@chimpanzee.rmq.cloudamqp.com'
-CELERY_RESULT_BACKEND = 'amqp://ulrfhjmm:EC84usIMUx3iEKetQo-W_otSQIMpdLub@chimpanzee.rmq.cloudamqp.com'
-# Celery Data Format
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Africa/Nairobi'
-
-
 
 # Application definition
 
@@ -94,8 +85,8 @@ EMAIL_HOST_PASSWORD = 'masiko26'
 
 AUTHENTICATION_BACKENDS = ('user.backends.MyAuthBackend',)
 
-BROKER_URL = 'amqp://[ipaddress]'
-CELERY_RESULT_BACKEND = 'amqp://[ipaddress]'
+BROKER_URL = 'redis://h:p238ff8d824b4795ffb363460fdfeb9e9e497c66eace92cf9df863db3192b589e@ec2-3-212-41-253.compute-1.amazonaws.com:21419'
+CELERY_RESULT_BACKEND = 'redis://h:p238ff8d824b4795ffb363460fdfeb9e9e497c66eace92cf9df863db3192b589e@ec2-3-212-41-253.compute-1.amazonaws.com:21419'
 # Celery Data Format
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'

@@ -9,7 +9,7 @@ app=Celery('flight_app')
 
 class Config:
     enable_utc = True
-    timezone = 'Europe/London'
+    timezone = 'Africa/Nairobi'
 # Using a String here means the worker will always find the configuration information
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()

@@ -1,6 +1,6 @@
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from .mailer import send_notification_email
+from flight_app.flight_app.mailer import send_notification_email
 from datetime import datetime, timedelta
 
 logger=get_task_logger(__name__)
