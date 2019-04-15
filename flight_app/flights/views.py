@@ -38,7 +38,7 @@ class ListFlightView(APIView):
 
 class WelcomeView(APIView):
     permission_classes = (permissions.AllowAny,)
-    def post(self, request, format=None):
+    def get(self, request, format=None):
         return HttpResponse({'Message':'Welcome to flight api'})
 
 
