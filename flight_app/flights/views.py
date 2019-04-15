@@ -71,7 +71,7 @@ class CreateView(APIView):
                                 flight_exists.save()
                                 user = User.objects.filter(id=user_id).first()
                                 flight_date =  flight_exists.date.strftime("%Y-%m-%d %H:%M")
-                                send_notification_email_task.apply_async(args=[user.name,user.email,flight_date,flight_exists.origin,flight_exists.destination ], countdown=3)
+                                send_notification_email_task.apply_async(args=[user.name,user.email,flight_date,flight_exists.origin,flight_exists.destination ], eta=date-timedelta(days=1))
                                 return Response(serializer.data)
                         else:
                             return Response({'Message':'Seat already booked'})
