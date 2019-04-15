@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from flight_app.flight_app.settings import SECRET_KEY
 from rest_framework.authtoken.models import Token
 from django.core import serializers
-from flight_app.flight_app.tasks import send_notification_email_task
+from flight_app.flight_app.mailer import send_notification_email
 from datetime import datetime, timedelta
 from django.http import HttpResponse
 
@@ -75,7 +75,7 @@ class CreateView(APIView):
                                 flight_exists.save()
                                 user = User.objects.filter(id=user_id).first()
 
-                                send_notification_email_task.apply_async(args=[user.name,user.email,flight_exists.date,flight_exists.origin,flight_exists.destination ], eta=date-timedelta(days=1, hours=3))
+                                send_notification_email(user.name,user.email,flight_exists.date,flight_exists.origin,flight_exists.destination )
                                 return Response(serializer.data)
                         else:
                             return Response({'Message':'Seat already booked'})
