@@ -10,6 +10,7 @@ from rest_framework.authtoken.models import Token
 from django.core import serializers
 from flight_app.flight_app.tasks import send_notification_email_task
 from datetime import datetime, timedelta
+from django.http import HttpResponse
 
 class ListFlightView(APIView):
     serializer_class = ListFlightSerializer
@@ -38,7 +39,7 @@ class ListFlightView(APIView):
 class WelcomeView(APIView):
     permission_classes = (permissions.AllowAny,)
     def post(self, request, format=None):
-        return Response({'Message':'Welcome to flight api'})
+        return HttpResponse({'Message':'Welcome to flight api'})
 
 
 class CreateView(APIView):
