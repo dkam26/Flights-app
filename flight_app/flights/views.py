@@ -39,7 +39,7 @@ class ListFlightView(APIView):
 class WelcomeView(APIView):
     permission_classes = (permissions.AllowAny,)
     def get(self, request, format=None):
-        return HttpResponse({'Message':'Welcome to flight api'})
+        return HttpResponse('Welcome to flight api')
 
 
 class CreateView(APIView):
