@@ -6,7 +6,7 @@
 
 
 # Flights
-Flights is an app helps users book flights to specific destinations.Users can view and book available flights after signing up the app.
+Flights is an app helps users book flights to specific destinations.Users can view and book available flights after signing up the app.The available flights are already upload in the database.
 
 ## About
 A user can book several flights
@@ -45,7 +45,7 @@ coverage run --source=flight_app manage.py test
 
 ## URL of the API
 
-https://flight-app-output.herokuapp.com/
+https://flight-app-output.herokuapp.com/auth/register/
 
 ## End points
 ### Endpoints to create a user account and login into the application
