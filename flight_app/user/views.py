@@ -108,8 +108,5 @@ class LoginAPIView(APIView):
                 return Response({'Message':'Invalid credientals'},status=HTTP_400_BAD_REQUEST)
         return Response({'Message':'Invalid json keys'},status=HTTP_400_BAD_REQUEST)
 
-class WelcomeAPIView(APIView):
-    permission_classes = (permissions.AllowAny,)
-    def get(self, request, format=None):
-        return HttpResponse('welcome to the flight api')
+
 
