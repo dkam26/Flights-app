@@ -82,3 +82,17 @@ class ModelTestCase(TestCase):
             {'origin':"New york", 'destination':"Nairobi","date":"2019-03-04 14:34", "seat":"1A", "airline":"Kenyan airways"},
             format='json')
         self.assertEqual(response.data, {'Message': 'Flight doesnt exist'})
+
+    def test_user_can_see_all_booked_flights(self):
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        response = self.client.get(
+            reverse('user flights'),
+            format='json')
+        self.assertEqual(response.data, [])
+
+    def test_user_cant_see_all_booked_flights_without_token(self):
+        self.client.credentials(HTTP_AUTHORIZATION='')
+        response = self.client.get(
+            reverse('user flights'),
+            format='json')
+        self.assertEqual(response.data, {'Message': 'No token provided'})
