@@ -1,4 +1,4 @@
-from flight_app.user.views import CreateView, LoginAPIView
+from flight_app.user.views import CreateView, LoginAPIView, WelcomeAPIView
 from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.views.decorators.csrf import csrf_exempt
@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = {
     url(r'auth/register/$', CreateView.as_view(), name="create"),
     url(r'auth/login/$', LoginAPIView.as_view(), name='login'),
+    url(r'$', WelcomeAPIView.as_view(), name='login'),
 }
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -19,6 +19,7 @@ from flight_app.flight_app.tasks import send_notification_email_task
 from datetime import datetime, timedelta
 from django.utils.timezone import now
 import re
+from django.http import HttpResponse
 # Create your views here.
 
 
@@ -106,4 +107,9 @@ class LoginAPIView(APIView):
             else:
                 return Response({'Message':'Invalid credientals'},status=HTTP_400_BAD_REQUEST)
         return Response({'Message':'Invalid json keys'},status=HTTP_400_BAD_REQUEST)
+
+class WelcomeAPIView(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def get(self, request, format=None):
+        return HttpResponse('welcome to the flight api')
 
