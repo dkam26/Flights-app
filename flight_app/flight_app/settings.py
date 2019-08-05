@@ -140,7 +140,7 @@ DATABASES = {
         'USER':  os.environ['RDS_USERNAME'],
         'PASSWORD': os.environ['RDS_PASSWORD'],
         'HOST': os.environ['RDS_HOSTNAME'],
-        'PORT': os.environ['RDS_PORT'],,
+        'PORT': os.environ['RDS_PORT'],
         'TEST': {
             'NAME':'text_bookingapp',
         }
