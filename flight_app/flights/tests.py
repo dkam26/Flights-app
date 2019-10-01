@@ -95,4 +95,4 @@ class ModelTestCase(TestCase):
         response = self.client.get(
             reverse('user flights'),
             format='json')
-        self.assertEqual(response.data, {'Message': 'No token provided'})
+        self.assertEqual(response.data, {"Message": "No token provided"})
