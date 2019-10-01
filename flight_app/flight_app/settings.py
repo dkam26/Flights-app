@@ -151,9 +151,10 @@ if 'RDS_HOSTNAME' in os.environ:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER':  'postgres',
-        'HOST': 'db',
+        'NAME': 'flightbookingapp',
+        'USER':  'kamaradeo',
+        'PASSWORD': 'masiko26',
+        'HOST': 'localhost',
         'PORT': '',
         'TEST': {
             'NAME':'text_bookingapp',
