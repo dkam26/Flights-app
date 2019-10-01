@@ -133,7 +133,9 @@ WSGI_APPLICATION = 'flight_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
+
+if 'RDS_HOSTNAME' in os.environ:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ['RDS_DB_NAME'],
@@ -143,9 +145,23 @@ DATABASES = {
         'PORT': os.environ['RDS_PORT'],
         'TEST': {
             'NAME':'text_bookingapp',
+            }
         }
     }
-}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER':  'postgres',
+        'HOST': 'db',
+        'PORT': '',
+        'TEST': {
+            'NAME':'text_bookingapp',
+            }
+        }
+    }
+
+
 
 if os.environ.get("DATABASE_URL"):
     DATABASES['default'] = dj_database_url.config()
